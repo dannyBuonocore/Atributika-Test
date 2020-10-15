@@ -7,15 +7,81 @@
 //
 
 import SwiftUI
+import Atributika
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, World!")
+  let html = "<p>test</p>\n<p>yeah</p>\n<p>test</p>\n<p>again</p>\n"
+  var body: some View {
+    VStack {
+      List {
+        HTMLViewUILabel(html: html)
+      }
+      List {
+        HTMLViewAttributedLabel(html: html)
+      }
     }
+  }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+
+struct HTMLViewUILabel: UIViewRepresentable {
+  let html: String
+  
+  func makeUIView(context: Context) -> UILabel {
+    let all = Style.font(.systemFont(ofSize: 16))
+    let link = Style("a")
+      .foregroundColor(.systemTeal, .normal)
+      .foregroundColor(.systemTeal, .highlighted)
+    
+    let attributedText = html
+      .style(tags: link)
+      .styleLinks(link)
+      .styleAll(all)
+    
+    let label = UILabel()
+    label.attributedText = attributedText.attributedString
+    label.numberOfLines = 0
+    label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    
+    let size = label.sizeThatFits(CGSize(width: 280, height: CGFloat.greatestFiniteMagnitude))
+    label.frame = CGRect(origin: .zero, size: size)
+    
+    return label
+  }
+  
+  func updateUIView(_ uiView: UILabel, context: Context) {
+    
+  }
 }
+
+
+struct HTMLViewAttributedLabel: UIViewRepresentable {
+  let html: String
+  
+  func makeUIView(context: Context) -> AttributedLabel {
+    let all = Style.font(.systemFont(ofSize: 16))
+    let link = Style("a")
+      .foregroundColor(.systemTeal, .normal)
+      .foregroundColor(.systemTeal, .highlighted)
+    
+    let attributedText = html
+      .style(tags: link)
+      .styleLinks(link)
+      .styleAll(all)
+    
+    let label = AttributedLabel()
+    label.attributedText = attributedText
+    label.numberOfLines = 0
+    label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    
+    let size = label.sizeThatFits(CGSize(width: 280, height: CGFloat.greatestFiniteMagnitude))
+    label.frame = CGRect(origin: .zero, size: size)
+    
+    return label
+  }
+  
+  func updateUIView(_ uiView: AttributedLabel, context: Context) {
+    
+  }
+}
+
