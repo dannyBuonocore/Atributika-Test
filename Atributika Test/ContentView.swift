@@ -10,13 +10,15 @@ import SwiftUI
 import Atributika
 
 struct ContentView: View {
-  let html = "<p>test</p>\n<p>yeah</p>\n<p>test</p>\n<p>again</p>\n"
+  let html = "<p>multiline</p>\n<p>entry</p>"
   var body: some View {
     VStack {
       List {
+        Text("With UILabel")
         HTMLViewUILabel(html: html)
       }
       List {
+        Text("With AttributedLabel")
         HTMLViewAttributedLabel(html: html)
       }
     }
